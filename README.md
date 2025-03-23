@@ -13,3 +13,5 @@ UMAT and VUMAT of a non-linear visco-elastic model after Schapery of 3 Kelvin-Vo
 <br/><br/>
 
 The model is part of my yet to be submitted and published PhD thesis. In case you would like to use the model within your own research, please contact me under "nicolas.christ@iwm.fraunhofer.de" to cite the resource correctly.
+
+Remark: The current version has some errors, which affect suddenly applied load cases (e.g. creep experiments). These errors have been resolved and will be uploaded within the next weeks (once the PhD thesis is finished).
