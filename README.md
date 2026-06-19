@@ -12,7 +12,7 @@ UMAT and VUMAT of a non-linear visco-elastic model after Schapery of 3 Kelvin-Vo
 
 <br/><br/>
 
-The model is part of PhD thesis, where you can also find a full derivation of the 3D formulation. In case you would like to use the model within your own research, please cite the resource correctly. Here is a [link](https://publikationen.bibliothek.kit.edu/1000194396) to my thesis. Alternatively, you can use the following BibTex:
+The model is part of my PhD thesis, where you can also find a full derivation of the 3D formulation. In case you would like to use the model within your own research, please cite the resource correctly. Here is a [link](https://publikationen.bibliothek.kit.edu/1000194396) to my thesis. Alternatively, you can use the following BibTex:
 
 ```bibtex
 @phdthesis{Christ.2026,
