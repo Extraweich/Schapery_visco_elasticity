@@ -1,0 +1,31 @@
+# Abaqus output and scratch files
+*.odb
+*.dat
+*.msg
+*.sta
+*.log
+*.com
+*.prt
+*.sim
+*.res
+*.mdl
+*.stt
+*.abq
+*.pac
+*.sel
+*.ipm
+*.023
+*.lck
+*.SMABulk
+*.exception
+# compiled user subroutines and tests
+*.o
+*.obj
+*.mod
+*.so
+*.dll
+nlve_tests
+nlve_tests.exe
+# post-processing
+*.png
+__pycache__/

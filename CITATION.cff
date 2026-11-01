@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite the doctoral thesis in which the model
+  and its implementation were developed (see preferred-citation).
+title: "NLVE_SCHAPERY: nonlinear viscoelastic Schapery model as UMAT/VUMAT for Abaqus"
+type: software
+authors:
+  - family-names: Christ
+    given-names: Nicolas
+license: MIT
+repository-code: "https://github.com/Extraweich/Schapery_visco_elasticity"
+version: 1.0.0
+date-released: "2026-11-01"
+keywords:
+  - Abaqus
+  - UMAT
+  - VUMAT
+  - nonlinear viscoelasticity
+  - Schapery
+  - polyamide 6
+preferred-citation:
+  type: thesis
+  thesis-type: "Doctoral thesis"
+  authors:
+    - family-names: Christ
+      given-names: Nicolas
+  title: "On the influence of temperature and humidity on interfaces in carbon fiber reinforced polyamide 6"
+  institution:
+    name: "Karlsruhe Institute of Technology (KIT)"
+  year: 2026 
+  doi: "10.5445/IR/1000194396"
+  url: "https://publikationen.bibliothek.kit.edu/1000194396" 

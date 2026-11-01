@@ -1,0 +1,54 @@
+#!/bin/bash
+
+### Set Memory to Maximum
+##SBATCH --mem=0
+
+### Name of the Jobs for the queueing-system
+#SBATCH --job-name=creep_3D
+
+### Number of Nodes, for Abaqus one node with a maximum of 28 cores
+#SBATCH --nodes=1
+
+### Number of tasks per node. This has to be the same a given in the Abaqus command after -cpus.
+#SBATCH --ntasks-per-node=1
+
+### The queue (partition) should be abaqus
+#SBATCH --partition=abaqus
+
+### The node number for abaqus 2019
+##SBATCH --nodelist=
+
+### Get mail when certain events occur (BEGINN, END, ALL)
+#SBATCH --mail-type None
+#SBATCH --mail-user=chri@iwm.fraunhofer.de
+
+### Redirection of Standard Output and Error Messages, %j will be the SLURM-jobID of the job
+#SBATCH -o creep_3D.out
+#SBATCH -e creep_3D.log
+
+### This function is needed. Whithout it, the Abaqus-job can't be canceled by the queueing-system.
+exit_gracefully () {
+  echo "Abaqus job 'creep_3D' terminated"
+  abq2023 terminate -job creep_3D
+  exit
+}
+trap exit_gracefully TERM
+
+### notwendig fuer V2018
+unset SLURM_GTIDS
+
+### load intel modules
+module load intel/XE.2019 2>>/dev/null
+
+### load abaqus modules
+module load abaqus/2023
+
+### Execution
+abq2023 -job creep_3D -cpus 1 user=../../src/nlve_schapery.f  double=both output_precision=full -scratch "/tmp/"  -background
+
+sleep 1
+### This loop is required for the function above to work. As long as the lockfile exists this skript will trap the TERM signal sent by the queueing-system.
+while [ -f creep_3D.lck ]; do
+  sleep 1
+done
+  

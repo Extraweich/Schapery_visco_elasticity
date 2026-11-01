@@ -1,0 +1,19 @@
+name: material-point tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Build and run tests
+        run: |
+          gfortran -O2 -ffree-form -fcheck=bounds src/nlve_schapery.f tests/nlve_tests.f90 -o nlve_tests
+          ./nlve_tests
+      - name: Check the reference script
+        run: |
+          python3 -m pip install numpy
+          python3 examples/reference/analytical_creep.py --stress 30

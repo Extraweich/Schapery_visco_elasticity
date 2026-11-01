@@ -1,0 +1,205 @@
+*Heading
+ NLVE_SCHAPERY example 02: thick-walled PA6 tube under internal pressure (axisymmetric)
+** ---------------------------------------------------------------------------
+** Long tube, inner radius 10 mm, outer radius 20 mm, plane strain in axial direction
+** (eps_zz = 0), 20 CAX4 elements over the wall thickness. Internal pressure 12 MPa,
+** applied within 5 s and held for 160 h.
+**
+** Why this example: for LINEAR viscoelasticity with a time-independent Poisson ratio
+** (as in this model) the stresses of a load-controlled problem are time-independent
+** (correspondence principle) - only the displacements creep. With the stress-dependent
+** Schapery functions the most loaded inner wall becomes more compliant and creeps faster,
+** so the stresses REDISTRIBUTE over time. Set the three function types (PROPS 9, 14, 19)
+** to 0 to see the linear reference with constant stresses.
+**
+** Run:    abaqus job=tube_axi user=../../src/nlve_schapery.f interactive
+** Output: S11 = radial, S22 = axial, S33 = hoop stress (CAX4 convention);
+**         history output of the inner- and outermost element and of the radial
+**         displacement U1 at the inner and outer surface.
+** Units:  mm, N, MPa, s
+** ---------------------------------------------------------------------------
+*Preprint, echo=NO, model=NO, history=NO, contact=NO
+**
+*Part, name=Tube
+*Node
+    1,   10.000, 0.
+    2,   10.500, 0.
+    3,   11.000, 0.
+    4,   11.500, 0.
+    5,   12.000, 0.
+    6,   12.500, 0.
+    7,   13.000, 0.
+    8,   13.500, 0.
+    9,   14.000, 0.
+   10,   14.500, 0.
+   11,   15.000, 0.
+   12,   15.500, 0.
+   13,   16.000, 0.
+   14,   16.500, 0.
+   15,   17.000, 0.
+   16,   17.500, 0.
+   17,   18.000, 0.
+   18,   18.500, 0.
+   19,   19.000, 0.
+   20,   19.500, 0.
+   21,   20.000, 0.
+  101,   10.000, 1.0
+  102,   10.500, 1.0
+  103,   11.000, 1.0
+  104,   11.500, 1.0
+  105,   12.000, 1.0
+  106,   12.500, 1.0
+  107,   13.000, 1.0
+  108,   13.500, 1.0
+  109,   14.000, 1.0
+  110,   14.500, 1.0
+  111,   15.000, 1.0
+  112,   15.500, 1.0
+  113,   16.000, 1.0
+  114,   16.500, 1.0
+  115,   17.000, 1.0
+  116,   17.500, 1.0
+  117,   18.000, 1.0
+  118,   18.500, 1.0
+  119,   19.000, 1.0
+  120,   19.500, 1.0
+  121,   20.000, 1.0
+*Element, type=CAX4
+   1,    1,    2,  102,  101
+   2,    2,    3,  103,  102
+   3,    3,    4,  104,  103
+   4,    4,    5,  105,  104
+   5,    5,    6,  106,  105
+   6,    6,    7,  107,  106
+   7,    7,    8,  108,  107
+   8,    8,    9,  109,  108
+   9,    9,   10,  110,  109
+  10,   10,   11,  111,  110
+  11,   11,   12,  112,  111
+  12,   12,   13,  113,  112
+  13,   13,   14,  114,  113
+  14,   14,   15,  115,  114
+  15,   15,   16,  116,  115
+  16,   16,   17,  117,  116
+  17,   17,   18,  118,  117
+  18,   18,   19,  119,  118
+  19,   19,   20,  120,  119
+  20,   20,   21,  121,  120
+*Elset, elset=All, generate
+ 1, 20, 1
+*Elset, elset=InnerElement
+ 1,
+*Elset, elset=OuterElement
+ 20,
+*Nset, nset=All, generate
+ 1, 21, 1
+ 101, 121, 1
+*Nset, nset=InnerNode
+ 1,
+*Nset, nset=OuterNode
+ 21,
+*Elset, elset=_InnerFace, internal
+ 1,
+*Surface, type=ELEMENT, name=InnerFace
+ _InnerFace, S4
+*Solid Section, elset=All, material=PA6_23C_10RH
+,
+*End Part
+**
+*Assembly, name=Assembly
+*Instance, name=Tube-1, part=Tube
+*End Instance
+*End Assembly
+**
+** PA6, 23 C / 10 % r.H. (dry) - parameters of the thesis (Kelvin-Voigt table and
+** Eqs. cold_dry_param_func). Units: MPa, s.
+** NOTE: Poisson's ratio 0.35 is a placeholder - replace it by the value used in the thesis.
+**       The uniaxial axial creep strain does not depend on nu, the lateral strain does.
+*Material, name=PA6_23C_10RH
+*Density
+ 1.14e-09,
+*Depvar
+ 29,
+  1, EINH1_11, inherited strain KV element 1, component 11
+  2, EINH1_22, inherited strain KV element 1, component 22
+  3, EINH1_33, inherited strain KV element 1, component 33
+  4, EINH1_12, inherited strain KV element 1, component 12
+  5, EINH1_13, inherited strain KV element 1, component 13
+  6, EINH1_23, inherited strain KV element 1, component 23
+  7, EINH2_11, inherited strain KV element 2, component 11
+  8, EINH2_22, inherited strain KV element 2, component 22
+  9, EINH2_33, inherited strain KV element 2, component 33
+ 10, EINH2_12, inherited strain KV element 2, component 12
+ 11, EINH2_13, inherited strain KV element 2, component 13
+ 12, EINH2_23, inherited strain KV element 2, component 23
+ 13, EINH3_11, inherited strain KV element 3, component 11
+ 14, EINH3_22, inherited strain KV element 3, component 22
+ 15, EINH3_33, inherited strain KV element 3, component 33
+ 16, EINH3_12, inherited strain KV element 3, component 12
+ 17, EINH3_13, inherited strain KV element 3, component 13
+ 18, EINH3_23, inherited strain KV element 3, component 23
+ 19, G0, nonlinear function g0
+ 20, G1G2, nonlinear function g1*g2
+ 21, ASIG, nonlinear function a_sigma
+ 22, NR_RES, relative residual of local Newton iteration
+ 23, SVM, von Mises (indicator) stress
+ 24, E_11, total strain, component 11
+ 25, E_22, total strain, component 22
+ 26, E_33, total strain, component 33
+ 27, E_12, total strain, component 12
+ 28, E_13, total strain, component 13
+ 29, E_23, total strain, component 23
+*User Material, constants=23, unsymm
+**   E0,    nu,     E1,  tau1,    E2,   tau2,    E3,    tau3
+ 2600., 0.35, 11676., 932., 7509., 21258., 5434., 201109.
+** g0: sigmoid d + (a-d)/(1+(s/c)^b) | type, a, b, c, d    | g1*g2: type, a, b
+ 1., 1.00, 3.49, 104.23, 19.57, 1., 0.98, 4.61
+** g1*g2: c, d | a_sigma: type, a, b, c, d
+ 25.19, 3.72, 1., 1.01, 4.22, 22.42, 0.26
+**
+** Plane strain in axial direction (long tube): U2 = 0 at all nodes
+*Boundary
+ Tube-1.All, 2, 2
+**
+** ---------------------------------------------------------------------------
+*Step, name=Load, nlgeom=NO, inc=1000
+ Ramp the internal pressure to 12 MPa within 5 s
+*Static
+ 0.05, 5., 1e-06, 0.5
+*Dsload
+ Tube-1.InnerFace, P, 12.
+*Output, field, frequency=5
+*Node Output
+ U
+*Element Output, elset=Tube-1.All
+ S, LE, SDV
+*Output, history, frequency=1
+*Node Output, nset=Tube-1.InnerNode
+ U1
+*Node Output, nset=Tube-1.OuterNode
+ U1
+*Element Output, elset=Tube-1.InnerElement
+ S11, S22, S33, SDV23
+*Element Output, elset=Tube-1.OuterElement
+ S11, S22, S33, SDV23
+*End Step
+** ---------------------------------------------------------------------------
+*Step, name=Creep, nlgeom=NO, inc=10000
+ Hold the pressure for 160 h
+*Static
+ 1., 576000., 1e-06, 20000.
+*Output, field, frequency=5
+*Node Output
+ U
+*Element Output, elset=Tube-1.All
+ S, LE, SDV
+*Output, history, frequency=1
+*Node Output, nset=Tube-1.InnerNode
+ U1
+*Node Output, nset=Tube-1.OuterNode
+ U1
+*Element Output, elset=Tube-1.InnerElement
+ S11, S22, S33, SDV23
+*Element Output, elset=Tube-1.OuterElement
+ S11, S22, S33, SDV23
+*End Step
